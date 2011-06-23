@@ -10,5 +10,5 @@ urlpatterns = patterns('',
 	(r'^user/', include('django.contrib.auth.urls')), 
 
 	# Example:
-	# (r'^cmmntr/', include('cmmntr.foo.urls')),
+	(r'^conversation(\?.*)?$', 'server.cmmntr.views.conversation')),
 )
