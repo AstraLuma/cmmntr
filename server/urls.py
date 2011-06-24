@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
+from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -10,5 +10,7 @@ urlpatterns = patterns('',
 	(r'^user/', include('django.contrib.auth.urls')), 
 
 	# Example:
-	(r'^conversation(\?.*)?$', 'server.cmmntr.views.conversation')),
+	(r'^list(\?.*)?$', 'server.cmmntr.views.convlist'),
+	(r'^conversation/(.*)$', 'server.cmmntr.views.conversation'),
+	(r'^post$', 'server.cmmntr.views.postcomment'),
 )
