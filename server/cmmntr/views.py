@@ -17,7 +17,7 @@ def filterurl(url):
 	return url
 
 def convlist(request, _=None):
-	url = filterurl(request.GET.('url'))
+	url = filterurl(request.GET.get('url'))
 	if not url:
 		return #FIXME: Do something
 	if not request.user.is_authenticated():
@@ -42,7 +42,7 @@ def postcomment(request, cid):
 		return json({'status': 'error', 'error': ['NOTPOST', 'Not a POST request']}, status=405)
 	url = filterurl(request.POST.get('url'))
 	if not url:
-		return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=)
+		return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=400)
 	user = request.user
 	text = request.POST['text']
 	conv = Comment(url=url, user=user, text=text)

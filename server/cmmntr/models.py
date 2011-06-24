@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Conversation(models.Model):
 	page = models.URLField(primary_key=True)
 	founder = models.ForeignKey(User)
-	topic = models.CharField(length=32)
+	topic = models.CharField(max_length=32)
 	
 	def __unicode__(self):
 		return self.topic

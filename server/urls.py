@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 	(r'^user/', include('django.contrib.auth.urls')), 
 
 	# Example:
-	(r'^list(\?.*)?$', 'server.cmmntr.views.convlist'),
-	(r'^conversation/(.*)$', 'server.cmmntr.views.conversation'),
-	(r'^post/(.*)$', 'server.cmmntr.views.postcomment'),
+	(r'^list(\?.*)?$', 'cmmntr.views.convlist'),
+	(r'^conversation/(.*)$', 'cmmntr.views.conversation'),
+	(r'^post/(.*)$', 'cmmntr.views.postcomment'),
 )
