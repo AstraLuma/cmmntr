@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>Available Covnersations</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script>
+
+function postnew() {
+	var c = $('#content').val();
+	$.ajax(..., {
+		data: {content: c},
+		complete: function() {
+		},
+	});
+}
+		</script>
+	</head>
+	<body>
+		<ul>
+		{% for conv in conversations %}
+			<li><a href="{{ conv.get_absolute_url }}">{{ conv }}</a></li>
+		{% endfor %}
+		</ul>
+		<formfield id="newform">
+			<legend>New Discussion</legend>
+			<textarea id="content"></textarea>
+			<button onclick="postnew()">Create New</button>
+		</formfield>
+	</body>
+</html>

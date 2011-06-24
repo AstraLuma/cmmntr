@@ -12,5 +12,5 @@ urlpatterns = patterns('',
 	# Example:
 	(r'^list(\?.*)?$', 'server.cmmntr.views.convlist'),
 	(r'^conversation/(.*)$', 'server.cmmntr.views.conversation'),
-	(r'^post$', 'server.cmmntr.views.postcomment'),
+	(r'^post/(.*)$', 'server.cmmntr.views.postcomment'),
 )

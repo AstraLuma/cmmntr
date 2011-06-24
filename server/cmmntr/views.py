@@ -1,6 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Conversation, Comment
 
+def json(obj, status=None):
+	import json
+	resp = HttpResponse(json.dumps(obj), mimetype='application/json')
+	if status:
+		resp.status_code = status
+	return resp
+
 def filterurl(url):
 	"""filterurl(string) -> string
 	Modifies the URL to reduce duplicate pages.
@@ -28,16 +35,16 @@ def conversation(request, cid):
 		'conversation': conv,
 		})
 
-def postcomment(request):
+def postcomment(request, cid):
 	if not request.user.is_authenticated():
-		return redirect('django.contrib.auth.views.login')
+		return json({'status': 'error', 'error': ['LOGIN', 'User not logged in']}, status=403)
 	if request.method != 'POST':
-		return #FIXME: Do something
+		return json({'status': 'error', 'error': ['NOTPOST', 'Not a POST request']}, status=405)
 	url = filterurl(request.POST.get('url'))
 	if not url:
-		return #FIXME: Do something
+		return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=)
 	user = request.user
 	text = request.POST['text']
-	conv = Conversation(url=url, user=user, text=text)
+	conv = Comment(url=url, user=user, text=text)
 	conv.save()
-	return ""
+	return json({'status': 'ok'})
