@@ -5,7 +5,7 @@
 		<script>
 function postnew() {
 	var c = $('#content').val();
-	$.post(..., {content: c}, 
+	$.post("/post/new", {content: c}, 
 	function(data, status, xhr) {
 		//
 	})
@@ -17,6 +17,7 @@ function postnew() {
 		<style>
 #posterror {
 	display: none;
+	background: red;
 }
 		</style>
 	</head>
@@ -26,11 +27,11 @@ function postnew() {
 			<li><a href="{{ conv.get_absolute_url }}">{{ conv }}</a></li>
 		{% endfor %}
 		</ul>
-		<formfield id="newform">
+		<fieldset id="newform">
 			<legend>New Discussion</legend>
 			<div id="posterror"></div>
-			<textarea id="content"></textarea>
-			<button onclick="postnew()">Create New</button>
-		</formfield>
+			<div><textarea id="content"></textarea></div>
+			<div><button onclick="postnew()">Create New</button></div>
+		</fieldset>
 	</body>
 </html>

@@ -43,11 +43,19 @@ def postcomment(request, cid):
 		return json({'status': 'error', 'error': ['LOGIN', 'User not logged in']}, status=403)
 	if request.method != 'POST':
 		return json({'status': 'error', 'error': ['NOTPOST', 'Not a POST request']}, status=405)
+	
+	if cid == 'new':
+		conv = Conversation()
+		conv.save()
+	else:
+		conv = get_object_or_404(Conversation, cid)
+	
 	url = filterurl(request.POST.get('url'))
 	if not url:
 		return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=400)
 	user = request.user
 	text = request.POST['text']
-	conv = Comment(url=url, user=user, text=text)
+	
+	 = Comment(url=url, user=user, text=text)
 	conv.save()
 	return json({'status': 'ok'})
