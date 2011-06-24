@@ -96,3 +96,5 @@ INSTALLED_APPS = (
 	
 	'cmmntr',
 )
+
+LOGIN_URL = '/user/login'

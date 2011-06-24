@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.conf import settings
+from django.contrib.auth.views import redirect_to_login
 from .models import Conversation, Comment
+
 
 def json(obj, status=None):
 	import json
@@ -21,7 +24,7 @@ def convlist(request, _=None):
 	if not url:
 		return #FIXME: Do something
 	if not request.user.is_authenticated():
-		return redirect('django.contrib.auth.views.login')
+		return redirect_to_login(next=request.get_full_path())
 	convs = Conversation.objects.filter(page=url)
 	return render(request, 'convlist.html', {
 		'conversations': convs,
@@ -30,7 +33,7 @@ def convlist(request, _=None):
 def conversation(request, cid):
 	conv = get_object_or_404(Conversation, cid)
 	if not request.user.is_authenticated():
-		return redirect('django.contrib.auth.views.login')
+		return redirect_to_login(next=request.get_full_path())
 	return render(request, 'conversation.html', {
 		'conversation': conv,
 		})
