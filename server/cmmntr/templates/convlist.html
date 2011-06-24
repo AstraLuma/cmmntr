@@ -6,13 +6,20 @@
 
 function postnew() {
 	var c = $('#content').val();
-	$.ajax(..., {
-		data: {content: c},
-		complete: function() {
-		},
+	$.post(..., {content: c}, 
+	function(data, status, xhr) {
+		//
+	})
+	.error(function(xhr, status, error) {
+		$('#posterror').text(status+'\n'+error);
 	});
 }
 		</script>
+		<style>
+#posterror {
+	display: none;
+}
+		</style>
 	</head>
 	<body>
 		<ul>
@@ -22,6 +29,7 @@ function postnew() {
 		</ul>
 		<formfield id="newform">
 			<legend>New Discussion</legend>
+			<div id="posterror"></div>
 			<textarea id="content"></textarea>
 			<button onclick="postnew()">Create New</button>
 		</formfield>
