@@ -11,7 +11,7 @@ class Conversation(models.Model):
 	
 	def get_topic(self):
 		if not self.topic:
-			self.clean_topic() #Compute the topic it
+			self.clean_topic() #Compute the topic if needed
 		if self.topic:
 			return self.topic
 		return "DERP: "+self.comment_set.order_by('date')[0].text
