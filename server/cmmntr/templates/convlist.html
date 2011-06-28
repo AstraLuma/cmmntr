@@ -10,7 +10,7 @@ function postnew() {
 	$.post("/post/new", {content: c, url: pageurl}, 
 	function(data, status, xhr) {
 		if (data.status == 'ok') {
-			document.url = '/conversation/'+data.cid;
+			window.location = '/conversation/'+data.cid;
 		} else {
 			$('#posterror').text(data.error[1]);
 			$('#posterror').show();
