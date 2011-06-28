@@ -1,16 +1,14 @@
 <html>
 	<head>
-		<title>Available Covnersations</title>
+		<title>Covnersation</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 		<script>
-pageurl = "{{ url|escapejs }}";
-
 function postnew() {
 	var c = $('#content').val();
-	$.post("/post/new", {content: c, url: pageurl}, 
+	$.post("/post/{{ conversation.id }}", {content: c}, 
 	function(data, status, xhr) {
 		if (data.status == 'ok') {
-			document.url = '/conversation/'+data.cid;
+			window.location.reload(true); //TODO: JS Insert
 		} else {
 			$('#posterror').text(data.error[1]);
 			$('#posterror').show();
@@ -20,7 +18,6 @@ function postnew() {
 		$('#posterror').text(status+'\n'+error);
 		$('#posterror').show();
 	});
-	return 1;
 }
 		</script>
 		<style>
@@ -31,22 +28,24 @@ function postnew() {
 		</style>
 	</head>
 	<body>
-		<ul>
-		{% for conv in conversations %}
-			<li><a href="/conversation/{{ conv.id }}">{{ conv.get_topic }}</a></li>
+		<div id="comments">
+		{% for comment in conversation.comments %}
+			<fieldset>
+				<legend>{{ comment.user }}</legend>
+				{{ comment.text|linebreaks }}
+			</fieldset>
 		{% endfor %}
-		</ul>
+		</div>
 		<fieldset id="newform">
-			<legend>New Discussion</legend>
+			<legend>New Comment</legend>
 			<div id="posterror"></div>
-			<div><textarea id="content" name="content"></textarea></div>
-			<div><button onclick="postnew()">Create New</button></div>
+			<div><textarea id="content"></textarea></div>
+			<div><button onclick="postnew()">Post</button></div>
 		</fieldset>
-		<form action="/post/new" method="post">
+		<form action="/post/{{ conversation.id }}" method="post">
 		<fieldset id="newform">
-			<legend>CGI Discussion</legend>
+			<legend>CGI Post</legend>
 			<div><textarea name="content"></textarea></div>
-			<input type="hidden" name="url" value="{{ url }}">
 			<input type="submit" value="CGI Submit">
 		</fieldset>
 		</form>

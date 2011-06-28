@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
+import logging
 from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Conversation, Comment
 
 
@@ -28,10 +30,12 @@ def convlist(request, _=None):
 	convs = Conversation.objects.filter(page=url)
 	return render(request, 'convlist.html', {
 		'conversations': convs,
+		'url': url,
 		})
 	
 def conversation(request, cid):
-	conv = get_object_or_404(Conversation, cid)
+	conv = get_object_or_404(Conversation, id=int(cid))
+	print conv.topic
 	if not request.user.is_authenticated():
 		return redirect_to_login(next=request.get_full_path())
 	return render(request, 'conversation.html', {
@@ -45,17 +49,19 @@ def postcomment(request, cid):
 		return json({'status': 'error', 'error': ['NOTPOST', 'Not a POST request']}, status=405)
 	
 	if cid == 'new':
-		conv = Conversation()
+		url = filterurl(request.POST.get('url'))
+		if not url:
+			return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=400)
+		conv = Conversation(founder=request.user, page=url)
 		conv.save()
 	else:
-		conv = get_object_or_404(Conversation, cid)
+		conv = get_object_or_404(Conversation, id=int(cid))
 	
-	url = filterurl(request.POST.get('url'))
-	if not url:
-		return json({'status': 'error', 'error': ['NOURL', 'No URL given']}, status=400)
-	user = request.user
-	text = request.POST['text']
+	text = request.POST['content']
 	
-	 = Comment(url=url, user=user, text=text)
-	conv.save()
-	return json({'status': 'ok'})
+	com = Comment(conversation=conv, user=request.user, text=text)
+	com.save()
+	if cid == 'new':
+		conv.clean_topic() #Awful hack
+		conv.save()
+	return json({'status': 'ok', 'cid': conv.id})
