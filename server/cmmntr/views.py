@@ -35,12 +35,16 @@ def convlist(request, _=None):
 	
 def conversation(request, cid):
 	conv = get_object_or_404(Conversation, id=int(cid))
-	print conv.topic
 	if not request.user.is_authenticated():
 		return redirect_to_login(next=request.get_full_path())
 	return render(request, 'conversation.html', {
 		'conversation': conv,
 		})
+
+def index(request):
+	if not request.user.is_authenticated():
+		return redirect_to_login(next=request.get_full_path())
+	return render(request, 'index.html')
 
 def postcomment(request, cid):
 	if not request.user.is_authenticated():

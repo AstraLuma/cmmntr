@@ -13,4 +13,5 @@ urlpatterns = patterns('',
 	(r'^list(\?.*)?$', 'cmmntr.views.convlist'),
 	(r'^conversation/(.*)$', 'cmmntr.views.conversation'),
 	(r'^post/(.*)$', 'cmmntr.views.postcomment'),
+	(r'^$', 'cmmntr.views.index'),
 )
